@@ -18,6 +18,11 @@
     cursor: pointer;
     background-size: cover;
     margin: 10px;
+
+    &:disabled {
+      opacity: .4;
+      cursor: not-allowed;
+    }
   }
   .brush {
     background: url('../assets/images/brush.png') no-repeat center center;

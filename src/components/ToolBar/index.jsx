@@ -33,6 +33,14 @@ const ToolBar = () => {
     toolState.setStrokeColor(target.value);
   }
 
+  const handleOnUndo = () => {
+    canvasState.undo();
+  }
+
+  const handleOnRedo = () => {
+    canvasState.redo();
+  }
+
   return (
     <div className="toolbar">
       <button className="toolbar__btn brush" onClick={handleOnDrawBrush} />
@@ -41,8 +49,14 @@ const ToolBar = () => {
       <button className="toolbar__btn eraser" onClick={handleOnDrawEraser} />
       <button className="toolbar__btn line" onClick={handleOnDrawLine} />
       <input type="color" onChange={handleColorChange} />
-      <button className="toolbar__btn undo" />
-      <button className="toolbar__btn redo" />
+      <button
+        className="toolbar__btn undo"
+        onClick={handleOnUndo}
+      />
+      <button
+        className="toolbar__btn redo"
+        onClick={handleOnRedo}
+      />
       <button className="toolbar__btn save" />
     </div>
   );
