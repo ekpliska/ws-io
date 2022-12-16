@@ -1,8 +1,7 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
 
-import { canvasState, toolState } from '../../store';
-import { Brush } from '../../tools';
+import { canvasState } from '../../store';
 
 import '../../styles/canvas.scss';
 

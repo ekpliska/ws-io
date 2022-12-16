@@ -27,6 +27,12 @@ const ToolBar = () => {
     toolState.setTool(new Line(canvasState.canvas));
   }
 
+  const handleColorChange = (e) => {
+    const { target } = e;
+    toolState.setFillColor(target.value);
+    toolState.setStrokeColor(target.value);
+  }
+
   return (
     <div className="toolbar">
       <button className="toolbar__btn brush" onClick={handleOnDrawBrush} />
@@ -34,7 +40,7 @@ const ToolBar = () => {
       <button className="toolbar__btn circle" onClick={handleOnDrawCircle} />
       <button className="toolbar__btn eraser" onClick={handleOnDrawEraser} />
       <button className="toolbar__btn line" onClick={handleOnDrawLine} />
-      <input type="color" />
+      <input type="color" onChange={handleColorChange} />
       <button className="toolbar__btn undo" />
       <button className="toolbar__btn redo" />
       <button className="toolbar__btn save" />
