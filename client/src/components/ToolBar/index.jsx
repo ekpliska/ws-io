@@ -8,23 +8,23 @@ import '../../styles/toolbar.scss';
 const ToolBar = () => {
 
   const handleOnDrawBrush = () => {
-    toolState.setTool(new Brush(canvasState.canvas));
+    toolState.setTool(new Brush(canvasState.canvas, canvasState.socket, canvasState.sessionid));
   }
 
   const handleOnDrawRect = () => {
-    toolState.setTool(new Rect(canvasState.canvas));
+    toolState.setTool(new Rect(canvasState.canvas, canvasState.socket, canvasState.sessionid));
   }
 
   const handleOnDrawCircle = () => {
-    toolState.setTool(new Circle(canvasState.canvas));
+    toolState.setTool(new Circle(canvasState.canvas, canvasState.socket, canvasState.sessionid));
   }
 
   const handleOnDrawEraser = () => {
-    toolState.setTool(new Eraser(canvasState.canvas));
+    toolState.setTool(new Eraser(canvasState.canvas, canvasState.socket, canvasState.sessionid));
   }
 
   const handleOnDrawLine = () => {
-    toolState.setTool(new Line(canvasState.canvas));
+    toolState.setTool(new Line(canvasState.canvas, canvasState.socket, canvasState.sessionid));
   }
 
   const handleColorChange = (e) => {
@@ -39,6 +39,16 @@ const ToolBar = () => {
 
   const handleOnRedo = () => {
     canvasState.redo();
+  }
+
+  const download = () => {
+    const dataUrl = canvasState.canvas.toDataURL();
+    const a = document.createElement('a');
+    a.href = dataUrl;
+    a.download = canvasState.sessionid + ".jpg";
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
   }
 
   return (
@@ -57,7 +67,7 @@ const ToolBar = () => {
         className="toolbar__btn redo"
         onClick={handleOnRedo}
       />
-      <button className="toolbar__btn save" />
+      <button className="toolbar__btn save" onClick={download} />
     </div>
   );
 };
