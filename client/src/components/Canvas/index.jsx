@@ -1,9 +1,10 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
 import { useParams } from 'react-router-dom';
+import axios from 'axios';
 
 import { canvasState, toolState } from '../../store';
-import {Brush, Rect} from '../../tools';
+import { Brush, Circle, Rect } from '../../tools';
 import Modal from '../Modal';
 
 import '../../styles/canvas.scss';
@@ -16,6 +17,17 @@ const Canvas = () => {
 
   React.useEffect(() => {
     canvasState.setCanvas(canvasRef.current);
+    let ctx = canvasRef.current.getContext('2d');
+    axios
+      .get(`http://localhost:3001/image?id=${params.id}`)
+      .then(response => {
+        const image = new Image();
+        image.src = response.data;
+        image.onload = () => {
+          ctx.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
+          ctx.drawImage(image, 0, 0, canvasRef.current.width, canvasRef.current.height);
+        }
+      })
   }, [])
 
   React.useEffect(() => {
@@ -38,7 +50,7 @@ const Canvas = () => {
         let message = JSON.parse(event.data)
         switch (message.method) {
           case 'connection':
-            console.log(`пользователь ${message.username} присоединился`)
+            console.log(`User ${message.username} is connected`);
             break
           case 'draw':
             handlerDraw(message);
@@ -54,10 +66,13 @@ const Canvas = () => {
     switch (figure.type) {
       case 'brush':
         Brush.draw(ctx, figure.x, figure.y);
-        break
+        break;
       case 'rect':
         Rect.staticDraw(ctx, figure.x, figure.y, figure.width, figure.height, figure.color);
-        break
+        break;
+      case 'circle':
+        Circle.staticDraw(ctx, figure.x, figure.y, figure.radius, figure.color);
+        break;
       case 'finish':
         ctx.beginPath();
         break;
@@ -66,6 +81,9 @@ const Canvas = () => {
 
   const handleMouseDown = (e) => {
     canvasState.addUndoAction(canvasRef.current.toDataURL());
+    axios
+      .post(`http://localhost:3001/image?id=${params.id}`, { img: canvasRef.current.toDataURL() })
+      .then(response => console.log(response.data));
   }
 
   const handleCloseModal = () => {

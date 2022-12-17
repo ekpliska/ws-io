@@ -22,6 +22,7 @@ export default class Brush extends Tool {
       }
     }));
   }
+
   mouseDownHandler(e) {
     this.mouseDown = true;
     this.ctx.beginPath();
