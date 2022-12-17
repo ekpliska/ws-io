@@ -1,16 +1,15 @@
-import {makeAutoObservable, observable} from 'mobx';
+import { makeAutoObservable, observable } from 'mobx';
 
 class CanvasState {
   canvas = null;
   undoList = [];
   redoList = [];
+  username = '';
 
   constructor() {
-    makeAutoObservable(this);
-  }
-
-  get undoListLength() {
-    return this.undoList.length;
+    makeAutoObservable(this, {
+      undoList: observable,
+    });
   }
 
   setCanvas(canvas) {
@@ -23,6 +22,10 @@ class CanvasState {
 
   addRedoAction(action) {
     this.redoList.push(action);
+  }
+
+  setUsername(name) {
+    this.username = name;
   }
 
   undo() {
